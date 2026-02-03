@@ -13,9 +13,6 @@ export class CreateUserController {
   ): Promise<Response | void> {
     try {
       const { name, email } = req.body as CreateUserDTO;
-      if (!name || !email) {
-        return res.status(400).json({ error: "Nome e email são obrigatórios" });
-      }
       const user = await this.useCase.execute({ name, email });
       
       const userResponse: UserResponseDTO = {

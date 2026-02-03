@@ -2,6 +2,7 @@ import { User } from "../../../../domain/entities/User";
 import { IUserRepository } from "../../../../domain/repositories/IUserRepository";
 import { ApplicationError } from "../../../errors/ApplicationError";
 import { CreateUserUseCase } from "../CreateUserUseCase";
+import { IdGenerator } from "../../../gateways/IdGenerator";
 
 const userRepositoryMock: IUserRepository = {
   save: jest.fn(),
@@ -9,8 +10,10 @@ const userRepositoryMock: IUserRepository = {
   findAll: jest.fn(),
   findById: jest.fn(),
   delete: jest.fn(),
-  
-  
+}
+
+const idGeneratorMock: IdGenerator = {
+  generate: jest.fn().mockReturnValue("123")
 }
 
 describe('CreateUserUseCase', () => {
@@ -23,6 +26,7 @@ describe('CreateUserUseCase', () => {
 
     const useCase = new CreateUserUseCase(
       userRepositoryMock,
+      idGeneratorMock,
     );
 
     const result = await useCase.execute({
@@ -48,6 +52,7 @@ describe('CreateUserUseCase', () => {
 
     const useCase = new CreateUserUseCase(
       userRepositoryMock,
+      idGeneratorMock,
     );
 
     await expect(

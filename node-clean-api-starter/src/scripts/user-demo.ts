@@ -3,11 +3,13 @@ import { DeleteUserUseCase } from "../application/use-cases/delete-user/DeleteUs
 import { FindUserByEmailUseCase } from "../application/use-cases/find-user-by-email/FindUserByEmailUseCase";
 import { GetUserByIdUseCase } from "../application/use-cases/get-user-by-id/GetUserByIdUseCase";
 import { InMemoryUserRepository } from "../infrastructure/repositories/InMemoryUserRepository";
+import { UuidGenerator } from "../infrastructure/services/UuidGenerator";
 
 async function run() {
   const userRepository = new InMemoryUserRepository();
+  const idGenerator = new UuidGenerator();
 
-  const createUser = new CreateUserUseCase(userRepository);
+  const createUser = new CreateUserUseCase(userRepository, idGenerator);
   const deleteUser = new DeleteUserUseCase(userRepository);
   const findById = new GetUserByIdUseCase(userRepository);
   const findByEmail = new FindUserByEmailUseCase(userRepository);

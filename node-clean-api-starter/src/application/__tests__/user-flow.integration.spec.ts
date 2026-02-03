@@ -1,4 +1,6 @@
 import { InMemoryUserRepository } from "../../infrastructure/repositories/InMemoryUserRepository";
+import { UuidGenerator } from "../../infrastructure/services/UuidGenerator";
+import { IdGenerator } from "../gateways/IdGenerator";
 
 import { CreateUserUseCase } from "../use-cases/create-user/CreateUserUseCase";
 import { DeleteUserUseCase } from "../use-cases/delete-user/DeleteUserUseCase";
@@ -7,13 +9,14 @@ import { GetUserByIdUseCase } from "../use-cases/get-user-by-id/GetUserByIdUseCa
 
 describe("User Flow – Integration Test", () => {
   let repository: InMemoryUserRepository;
-
+  let idGenerator: IdGenerator;
   beforeEach(() => {
     repository = new InMemoryUserRepository();
+    idGenerator = new UuidGenerator();
   });
 
   it("should create users, delete one, and retrieve users by id and email", async () => {
-    const createUser = new CreateUserUseCase(repository);
+    const createUser = new CreateUserUseCase(repository, idGenerator);
     const deleteUser = new DeleteUserUseCase(repository);
     const getUserById = new GetUserByIdUseCase(repository);
     const findUserByEmail = new FindUserByEmailUseCase(repository);
